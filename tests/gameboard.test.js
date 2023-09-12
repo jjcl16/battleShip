@@ -70,7 +70,7 @@ it("can't overplace ships vertical", () => {
   ]);  
 } )
 
-it("other ship", () => {
+it("add other ship", () => {
   expect(newBoard.placeShip(shipC, 0 , 1, "v")).toStrictEqual([
     [ shipB, shipC, shipC, '', '', '' ],
     [ shipB, '', '', '', '', '' ],

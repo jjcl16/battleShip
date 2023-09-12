@@ -41,7 +41,6 @@ const Gameboard = (x,y) => {
   const insertShip = (atFixed, atBeginning, orientation = "v", ship) => {
     let shipSize = ship.shipSize;
     let isThereAShip = alreadyAShip( atFixed, atBeginning, orientation, shipSize);
-     //console.log({ship})
     if(!isThereAShip){
       
       for(let i = atBeginning; i < (atBeginning + shipSize) ; i++ ){
@@ -52,15 +51,12 @@ const Gameboard = (x,y) => {
         }
       }
     }
-    //console.log(board)
   }
 
   const alreadyAShip = (atFixed, atBeginning, orientation = "v", shipSize) => {
     
-    //console.log(board);
     let checkShips = false;
     for(let i = atBeginning; i < (atBeginning + shipSize) ; i++ ){
-      //console.log(board);
       if (orientation === "h" && typeof(board[i][atFixed]) === "object"){
           checkShips = true;
       } else if(orientation === "v" && typeof(board[atFixed][i]) === "object"){
