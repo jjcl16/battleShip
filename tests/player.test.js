@@ -1,4 +1,8 @@
+const Player = require("../src/player")
+const player = Player();
 
 it("player create board", () => {
-  expect(player.createBoard()).toBe(true);
+  expect(player.exist).toBe(true);
 })
+
+
