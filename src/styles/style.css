@@ -3,6 +3,54 @@
     margin: 10px;
 }
 
-.attackElementContainer {
+.playerBoardElement {
+    border: 2px solid black;
+    margin: 3px;  
+}
+
+.attackElementContainer, .playerBoardElementContainer {
     display: flex;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+#top {
+    height: 8vh;
+}
+
+#workspace {
+    display: grid;
+    grid-template: 80vh / 25vw 60vw;
+}
+
+#sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#attackGround {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.attackedZone {
+    background-color: rgb(255, 153, 0);
+}
+
+.hitShip {
+    background-color: rgb(255, 0, 0);
+    transition: all 0.3;
+}
+
+.sunkShip {
+    background-color: black;
 }

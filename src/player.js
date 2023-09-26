@@ -37,7 +37,7 @@ function RandomShipPlacement (arrayOfShips) {
 
 
 //only expose the playerGameboard and its methods.
-return { playerGameboard }
+return { playerGameboard,  ships }
 }
 
 module.exports = player;

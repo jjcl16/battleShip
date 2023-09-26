@@ -1,8 +1,16 @@
+const { forEach } = require("lodash");
 const Player = require("./player");
+//const callAttack = require("./attack")
 const xSize = 7;
 const ySize = 7;
 const player = Player(xSize,ySize);
 const cpu = Player(xSize,ySize);
+
+const cpuShipA = cpu.ships[0];
+const cpuShipB = cpu.ships[1];
+const cpuShipC = cpu.ships[2];
+const cpuShipD = cpu.ships[3];
+const cpuShipE = cpu.ships[4];
 
 
 const domInit = () => {
@@ -23,10 +31,13 @@ const domInit = () => {
     body.appendChild(workspace);
     body.appendChild(foot);
 
-    // workspace boxes (attackground, playerBoard, whoPlays)
+    // workspace boxes (attackground, sidebar (playerBoard, whoPlays))
 
     const attackGround = document.createElement("div");
     attackGround.setAttribute("id", "attackGround");
+    
+    const sidebar = document.createElement("div");
+    sidebar.setAttribute("id", "sidebar");
 
     const playerBoard  = document.createElement("div");
     playerBoard.setAttribute("id", "playerBoard");
@@ -34,39 +45,22 @@ const domInit = () => {
     const whoPlaysConstainer = document.createElement("div");
     whoPlaysConstainer.setAttribute("id", "whoPlaysContainer");
 
+    // payerboard and whoPlaysContainer append to sidebar
+    sidebar.appendChild(playerBoard);
+    sidebar.appendChild(whoPlaysConstainer);
+
     // append to the workspace
+    workspace.appendChild(sidebar);
     workspace.appendChild(attackGround);
-    workspace.appendChild(playerBoard);
-    workspace.appendChild(whoPlaysConstainer);
-
-
+    
     // build board for attackGround and playerBoard
-    /*
-    for (let y = 0; y < 6; y++) {
-        const YAttack = document.createElement("div");
 
-        const YPlayer = document.createElement("div");
-
-        for (let x = 0; x < 7; x++) {
-            const XAttack = document.createElement("div");
-            XAttack.setAttribute("id", "A"+[x]+[y]);
-            XAttack.addEventListener("click", callAttack );
-            XAttack.textContent = [x]+[y];
-            YAttack.appendChild(XAttack);    
-            
-            const XPlayer = document.createElement("div");
-            XPlayer.setAttribute("id", "P"+[x]+[y]);
-            YPlayer.appendChild(XPlayer);    
-        }
-        attackGround.appendChild(YAttack);
-        playerBoard.appendChild(YPlayer);
-    }
-*/
     for (let x = 0; x < xSize; x++) {
         const XAttack = document.createElement("div");
         XAttack.classList.add("attackElementContainer");
 
         const XPlayer = document.createElement("div");
+        XPlayer.classList.add("playerBoardElementContainer")
 
         for (let y = 0; y < ySize; y++) {
             const YAttack = document.createElement("div");
@@ -78,6 +72,8 @@ const domInit = () => {
             
             const YPlayer = document.createElement("div");
             YPlayer.setAttribute("id", "P"+[x]+[y]);
+            YPlayer.classList.add("playerBoardElement")
+            YPlayer.textContent = [x]+[y];
             XPlayer.appendChild(YPlayer);    
         }
         attackGround.appendChild(XAttack);
@@ -90,10 +86,66 @@ const domInit = () => {
 
 module.exports = domInit;
 
-function callAttack(e){
-    const x = e.target.id[1];
-    const y = e.target.id[2];
-    const hit = cpu.playerGameboard.receiveAttack(x,y);
-    (!hit) ? console.log("miss hit") : console.log("hit, is sunk?" + hit.isSunk());
+const callAttack = (e) => {
+    const shipElement = e.target;
+    const board = shipElement.id[0];
+    const x = shipElement.id[1];
+    const y = shipElement.id[2];
+
+    // remove event listener
+    shipElement.removeEventListener("click",callAttack)
+    shipElement.classList.add("attackedZone");
+
+    const hitAShip = cpu.playerGameboard.receiveAttack(x,y);
+    (!hitAShip) ? console.log("miss hit") : attackedShip(hitAShip, shipElement);
     console.log(cpu.playerGameboard)
+}
+
+const attackedShip = (ship, shipElement) => {
+    shipElement.classList.remove("attackedZone");
+    shipElement.classList.add("hitShip");
+    const shipSelector = whatShipIs(cpu.ships, ship);
+    shipElement.classList.add(shipSelector);
+    if(ship.isSunk()) markAsSunkCpuShip(shipSelector);
+    console.log("hit, is sunk?" + ship.isSunk())
+}
+
+const whatShipIs = (ships, ship) => {
+    let shipIdentifyer;
+    switch (ship.id) {
+        case ships[0].id:
+            shipIdentifyer = "ShipA";
+            break;
+
+        case ships[1].id:
+            shipIdentifyer = "ShipB";
+            break;
+        
+        case ships[2].id:
+            shipIdentifyer  = "ShipC";  
+            break;
+        
+        case ships[3].id:
+            shipIdentifyer = "ShipD";
+            break;
+
+        case ships[4].id:
+            shipIdentifyer = "ShipE";
+            break;
+
+        default:
+            break;
+    }
+    return shipIdentifyer;
+}
+
+const markAsSunkCpuShip = (shipSelector) =>{
+    const board = document.querySelector(".attackElementContainer")
+    shipSelector = "." + shipSelector;
+    const shipElements = document.querySelectorAll(shipSelector);
+    console.log(shipElements);
+    shipElements.forEach((element)  => {
+        element.classList.remove("hitShip");
+        element.classList.add("sunkShip");
+    }) 
 }
