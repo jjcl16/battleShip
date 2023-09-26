@@ -24,14 +24,13 @@ function RandomShipPlacement (arrayOfShips) {
         let received = false;
         do {
             //console.log(ship);
-            const x = randomIntFromInterval(1,7) - 1;
-            const y = randomIntFromInterval(1,6) - 1;
+            const xSet = randomIntFromInterval(1,x) - 1;
+            const ySet = randomIntFromInterval(1,y) - 1;
             const hOrV = (randomBoolean()) ? "h" : "v";
             //console.log({x,y,hOrV,ship})
-            received = playerGameboard.placeShip(ship, x, y, hOrV);
+            received = playerGameboard.placeShip(ship, xSet, ySet, hOrV);
             
         } while (!received);
-
         
     });
 }
