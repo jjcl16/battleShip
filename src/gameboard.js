@@ -1,29 +1,26 @@
 
 const Gameboard = (x,y) => {
-  const xSize = x;
-  const ySize = y;
+  const xBoard = x;
+  const yBoard = y;
 
-  let board = Array(xSize);
-  for (let index = 0; index < xSize; index++) {
-    const arrayY = Array(ySize);
+  let board = Array(xBoard);
+  for (let index = 0; index < xBoard; index++) {
+    const arrayY = Array(yBoard);
     arrayY.fill("");
     board[index] = arrayY;    
   }
 
-  const placeShip = (ship, xPosition = 0, yPosition = 0, orientation = "v") => {
+  const placeShip = (ship, xPosition = 0, yPosition = 0, orientation ) => {
     const shipLength = ship.shipSize;
-    if(orientation === "v" && xPosition < xSize){
-      if ((yPosition + shipLength) <= (ySize)){        
-        insertShip(xPosition, yPosition, orientation, ship);
-        return board;
-      }
-    } else if(orientation === "h" && yPosition < ySize){
-      if ((xPosition + shipLength) <= (xSize)){
-        insertShip(yPosition, xPosition, orientation, ship);
-        return board;
-      }
-    }
-    return false;
+    
+    const shipFit = checkShipFit(xPosition, yPosition, shipLength, orientation, xBoard, yBoard);
+    if (!shipFit) return false;
+    const noShipPlace = checkNoship(xPosition, yPosition, shipLength, orientation, board);
+    if (!noShipPlace) return false;
+    // console.log({shipFit, noShipPlace});
+    board = placeShipOnBoard(xPosition, yPosition, ship, orientation, board);
+    return board 
+      
   }
 
    const receiveAttack  = (x = 0, y = 0) => {
@@ -38,35 +35,7 @@ const Gameboard = (x,y) => {
     } 
    }
 
-  const insertShip = (atFixed, atBeginning, orientation = "v", ship) => {
-    let shipSize = ship.shipSize;
-    let isThereAShip = alreadyAShip( atFixed, atBeginning, orientation, shipSize);
-    if(!isThereAShip){
-      
-      for(let i = atBeginning; i < (atBeginning + shipSize) ; i++ ){
-        if (orientation === "h"){          
-          board[i][atFixed] = ship;
-        } else{
-          board[atFixed][i] = ship;          
-        }
-      }
-    }
-  }
-
-  const alreadyAShip = (atFixed, atBeginning, orientation = "v", shipSize) => {
-    
-    let checkShips = false;
-    for(let i = atBeginning; i < (atBeginning + shipSize) ; i++ ){
-      if (orientation === "h" && typeof(board[i][atFixed]) === "object"){
-          checkShips = true;
-          break;
-      } else if(orientation === "v" && typeof(board[atFixed][i]) === "object"){
-        checkShips = true;
-        break;
-      }    
-    }
-    return checkShips;
-  }
+  
 
   return { board, placeShip, receiveAttack }
 }
@@ -74,3 +43,50 @@ const Gameboard = (x,y) => {
 
 module.exports = Gameboard;
 
+
+const checkShipFit = (xPosition, yPosition, shipLength, orientation, xBoard, yBoard) => {
+
+  if (orientation === "v"){
+    const positionPlusShip = yPosition + shipLength;
+    return ( positionPlusShip <= yBoard );
+  } else {
+    const positionPlusShip = xPosition + shipLength
+    return ( positionPlusShip <= xBoard );
+  }
+
+}
+
+const checkNoship = (xPosition, yPosition, shipLength, orientation, board) => {
+  let noShipPlace = true;
+  if (orientation === "v"){
+    const positionPlusShip = yPosition + shipLength;
+    for (let moveOnY = yPosition; moveOnY < positionPlusShip; moveOnY++) {
+      if (board[xPosition][moveOnY] != ""){
+        noShipPlace = false;
+      }      
+    }
+  } else {
+    const positionPlusShip = xPosition + shipLength;
+    for (let moveOnX = xPosition; moveOnX < positionPlusShip; moveOnX++) {
+      if (board[moveOnX][yPosition] != ""){
+        noShipPlace = false;
+      }      
+    }
+  }
+  return noShipPlace;
+}
+
+const placeShipOnBoard = (xPosition, yPosition, ship, orientation, board) => {
+  if (orientation === "v"){
+    const positionPlusShip = yPosition + ship.shipSize;
+    for (let moveOnY = yPosition; moveOnY < positionPlusShip; moveOnY++) {
+      board[xPosition][moveOnY] = ship;
+    }
+  } else {
+    const positionPlusShip = xPosition + ship.shipSize;
+    for (let moveOnX = xPosition; moveOnX < positionPlusShip; moveOnX++) {
+      board[moveOnX][yPosition] = ship;
+    }
+  }
+  return board;
+}

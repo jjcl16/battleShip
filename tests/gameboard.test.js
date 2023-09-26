@@ -47,27 +47,11 @@ it("wrong ship placement (vertical)", () => {
 } )
 
 it("can't overplace ships horizontal", () => {
-  expect(newBoard.placeShip(shipC, 1 , 4, "h")).toStrictEqual([
-    [ shipB, '', '', '', '', '' ],
-    [ shipB, '', '', '', '', '' ],
-    [ shipB, '', '', shipA, shipA, shipA ],
-    [ '', '', '', '', '', '' ],
-    [ '', '', '', '', '', '' ],
-    [ '', '', '', '', '', '' ],
-    [ '', '', '', '', '', '' ]
-  ]);
+  expect(newBoard.placeShip(shipC, 1 , 4, "h")).toBe(false);
 } )
 
 it("can't overplace ships vertical", () => {
-  expect(newBoard.placeShip(shipC, 1 , 0, "v")).toStrictEqual([
-    [ shipB, '', '', '', '', '' ],
-    [ shipB, '', '', '', '', '' ],
-    [ shipB, '', '', shipA, shipA, shipA ],
-    [ '', '', '', '', '', '' ],
-    [ '', '', '', '', '', '' ],
-    [ '', '', '', '', '', '' ],
-    [ '', '', '', '', '', '' ]
-  ]);  
+  expect(newBoard.placeShip(shipC, 1 , 0, "v")).toBe(false);  
 } )
 
 it("add other ship", () => {
