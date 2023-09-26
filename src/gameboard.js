@@ -59,8 +59,10 @@ const Gameboard = (x,y) => {
     for(let i = atBeginning; i < (atBeginning + shipSize) ; i++ ){
       if (orientation === "h" && typeof(board[i][atFixed]) === "object"){
           checkShips = true;
+          break;
       } else if(orientation === "v" && typeof(board[atFixed][i]) === "object"){
         checkShips = true;
+        break;
       }    
     }
     return checkShips;

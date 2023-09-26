@@ -7,7 +7,8 @@
     "test": "jest",
     "build": "webpack",
     "watch": "webpack --watch",
-    "server": "node server.js"
+    "server": "webpack-dev-server --open",
+    "server2": "node server.js"
   },
   "keywords": [],
   "author": "Jenner Caraballo",

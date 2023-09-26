@@ -10,18 +10,25 @@ const shipC = Ship(3);
 const shipD = Ship(2);
 const shipE = Ship(1);
 
-// playerGameboard.placeShip(shipA, 3, 2, "v");
+// Array of ship, to placement
+const ships = [shipA, shipB, shipD,  shipC, shipE];
+
+// call randomPlaceShip
+RandomShipPlacement(ships);
 
 // function to randomly place the ships in the board of each player
 
-const RandomShipPlacement = (arrayOfShips) => {
+function RandomShipPlacement (arrayOfShips) {
+    console.log(arrayOfShips);
     arrayOfShips.forEach(ship => {
-        let received;
+        let received = false;
         do {
-            const x = randomIntFromInterval(0,7);
-            const y = randomIntFromInterval(0,6);
-            const hOrV = (randomBoolean) ? "h" : "v";
-            received = playerGameboard.placeShip(ship, x, y, hOrV)
+            console.log(ship);
+            const x = randomIntFromInterval(1,7) - 1;
+            const y = randomIntFromInterval(1,6) - 1;
+            const hOrV = (randomBoolean()) ? "h" : "v";
+            console.log({x,y,hOrV,ship})
+            received = playerGameboard.placeShip(ship, x, y, hOrV);
             
         } while (!received);
 
@@ -29,11 +36,7 @@ const RandomShipPlacement = (arrayOfShips) => {
     });
 }
 
-// Array of ship, to placement
-const ships = [shipA, shipB, shipC, shipD, shipE];
 
-// call randomPlaceShip
-RandomShipPlacement(ships);
 
 //only expose the playerGameboard and its methods.
 return { playerGameboard }
@@ -48,6 +51,6 @@ const  randomIntFromInterval = (min, max) => { // min and max included
 
 // Random boolean
 const randomBoolean = () => {
-    return Math.random() < 0.5;
+    return (Math.random() < 0.5);
 } 
 
