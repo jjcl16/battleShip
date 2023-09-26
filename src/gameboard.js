@@ -17,7 +17,6 @@ const Gameboard = (x,y) => {
     if (!shipFit) return false;
     const noShipPlace = checkNoship(xPosition, yPosition, shipLength, orientation, board);
     if (!noShipPlace) return false;
-    // console.log({shipFit, noShipPlace});
     board = placeShipOnBoard(xPosition, yPosition, ship, orientation, board);
     return board 
       

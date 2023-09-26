@@ -40,6 +40,7 @@ const domInit = () => {
 
 
     // build board for attackGround and playerBoard
+    /*
     for (let y = 0; y < 6; y++) {
         const YAttack = document.createElement("div");
 
@@ -59,6 +60,30 @@ const domInit = () => {
         attackGround.appendChild(YAttack);
         playerBoard.appendChild(YPlayer);
     }
+*/
+    for (let x = 0; x < 7; x++) {
+        const XAttack = document.createElement("div");
+        XAttack.classList.add("attackElementContainer");
+
+        const XPlayer = document.createElement("div");
+
+        for (let y = 0; y < 7; y++) {
+            const YAttack = document.createElement("div");
+            YAttack.setAttribute("id", "A"+[x]+[y]);
+            YAttack.classList.add("attackElement");
+            YAttack.addEventListener("click", callAttack );
+            YAttack.textContent = [x]+[y];
+            XAttack.appendChild(YAttack);    
+            
+            const YPlayer = document.createElement("div");
+            YPlayer.setAttribute("id", "P"+[x]+[y]);
+            XPlayer.appendChild(YPlayer);    
+        }
+        attackGround.appendChild(XAttack);
+        playerBoard.appendChild(XPlayer);
+    }
+
+
 
 }
 
