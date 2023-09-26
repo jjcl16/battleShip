@@ -30,8 +30,7 @@ function RandomShipPlacement (arrayOfShips) {
             //console.log({x,y,hOrV,ship})
             received = playerGameboard.placeShip(ship, xSet, ySet, hOrV);
             
-        } while (!received);
-        
+        } while (!received);        
     });
 }
 
