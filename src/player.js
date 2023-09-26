@@ -1,9 +1,9 @@
 const Gameboard = require("./gameboard");
 const Ship = require("./ship");
 
-const player = () => {
+const player = (x,y) => {
 
-let playerGameboard = Gameboard(7,7);
+let playerGameboard = Gameboard(x,y);
 const shipA = Ship(4);
 const shipB = Ship(3);
 const shipC = Ship(3);

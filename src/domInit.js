@@ -1,7 +1,8 @@
 const Player = require("./player");
-
-const player = Player();
-const cpu = Player();
+const xSize = 7;
+const ySize = 7;
+const player = Player(xSize,ySize);
+const cpu = Player(xSize,ySize);
 
 
 const domInit = () => {
@@ -61,13 +62,13 @@ const domInit = () => {
         playerBoard.appendChild(YPlayer);
     }
 */
-    for (let x = 0; x < 7; x++) {
+    for (let x = 0; x < xSize; x++) {
         const XAttack = document.createElement("div");
         XAttack.classList.add("attackElementContainer");
 
         const XPlayer = document.createElement("div");
 
-        for (let y = 0; y < 7; y++) {
+        for (let y = 0; y < ySize; y++) {
             const YAttack = document.createElement("div");
             YAttack.setAttribute("id", "A"+[x]+[y]);
             YAttack.classList.add("attackElement");
