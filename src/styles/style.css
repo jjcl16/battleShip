@@ -1,6 +1,8 @@
 .attackElement{
     border: 2px solid black;
     margin: 10px;
+    background-color: white;
+    transition: all 0.7s;
 }
 
 .playerBoardElement {
@@ -48,9 +50,38 @@ body {
 
 .hitShip {
     background-color: rgb(255, 0, 0);
-    transition: all 0.3;
+    
 }
 
 .sunkShip {
     background-color: black;
+}
+
+#whoPlaysContainer{
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    width: 40%;
+    height: 3vh;
+}
+
+.selection{
+    z-index: 1;
+    text-justify: center;
+    text-align: center;
+    width: 50%;
+}
+
+#selector {
+    position: absolute;
+    background-color: rgba(121, 130, 131, 0.444);
+    width: 50%;
+    height: 100%;
+    z-index: 2;
+    left: 0%;
+    transition: all 1s ease-in-out
+}
+
+#selector.cpu {
+    left: 50%;
 }
