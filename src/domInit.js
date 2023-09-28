@@ -113,10 +113,14 @@ const callAttack = (e) => {
         shipElement.classList.add("attackedZone");
 
         const hitAShip = cpu.playerGameboard.receiveAttack(x,y);
-        (!hitAShip) ? console.log("miss hit") : attackedShip(hitAShip, shipElement);
-        console.log(cpu.playerGameboard);
-        moves++;
-        callCpu();
+        if (!hitAShip) {
+            moves++;
+            callCpu();
+        } else{
+            attackedShip(hitAShip, shipElement);
+        }
+        //console.log(cpu.playerGameboard);
+        
     }
     
 }
@@ -160,17 +164,23 @@ const whatShipIs = (ships, ship) => {
 }
 
 const markAsSunkCpuShip = (shipSelector) =>{
-    const board = document.querySelector(".attackElementContainer")
+    const board = document.querySelector("#attackGround")
     shipSelector = "." + shipSelector;
-    const shipElements = document.querySelectorAll(shipSelector);
-    console.log(shipElements);
+    const shipElements = board.querySelectorAll(shipSelector);
+    //console.log(shipElements);
     shipElements.forEach((element)  => {
         element.classList.remove("hitShip");
         element.classList.add("sunkShip");
     }) 
 }
 
+
 const callCpu = () => {
-    cpuPlays(player);
-    moves++;
+    console.log("callCpu");
+    const selector = document.querySelector("#selector");
+    selector.classList.add("cpu");
+    cpuPlays(player).then(() => {
+            moves++;
+            selector.classList.remove("cpu");
+        });
 }
