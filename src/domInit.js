@@ -1,17 +1,17 @@
-const { forEach } = require("lodash");
 const Player = require("./player");
-//const callAttack = require("./attack")
+const cpuPlays = require("./cpuPlays");
+
 const xSize = 7;
 const ySize = 7;
 const player = Player(xSize,ySize);
 const cpu = Player(xSize,ySize);
-
 const cpuShipA = cpu.ships[0];
 const cpuShipB = cpu.ships[1];
 const cpuShipC = cpu.ships[2];
 const cpuShipD = cpu.ships[3];
 const cpuShipE = cpu.ships[4];
 
+let moves = 1;
 
 const domInit = () => {
 
@@ -42,8 +42,24 @@ const domInit = () => {
     const playerBoard  = document.createElement("div");
     playerBoard.setAttribute("id", "playerBoard");
 
+    // who plays switch
     const whoPlaysConstainer = document.createElement("div");
     whoPlaysConstainer.setAttribute("id", "whoPlaysContainer");
+
+    const playerSelection = document.createElement("div");
+    playerSelection.classList.add("selection");
+    playerSelection.textContent = "Player";
+
+    const cpuSelection = document.createElement("div");
+    cpuSelection.classList.add("selection");
+    cpuSelection.textContent = "CPU";
+
+    const selector = document.createElement("div");
+    selector.setAttribute("id","selector");
+
+    whoPlaysConstainer.appendChild(playerSelection);
+    whoPlaysConstainer.appendChild(cpuSelection);
+    whoPlaysConstainer.appendChild(selector);
 
     // payerboard and whoPlaysContainer append to sidebar
     sidebar.appendChild(playerBoard);
@@ -91,14 +107,22 @@ const callAttack = (e) => {
     const board = shipElement.id[0];
     const x = shipElement.id[1];
     const y = shipElement.id[2];
+    if(moves%2){
+        // remove event listener
+        shipElement.removeEventListener("click",callAttack)
+        shipElement.classList.add("attackedZone");
 
-    // remove event listener
-    shipElement.removeEventListener("click",callAttack)
-    shipElement.classList.add("attackedZone");
-
-    const hitAShip = cpu.playerGameboard.receiveAttack(x,y);
-    (!hitAShip) ? console.log("miss hit") : attackedShip(hitAShip, shipElement);
-    console.log(cpu.playerGameboard)
+        const hitAShip = cpu.playerGameboard.receiveAttack(x,y);
+        if (!hitAShip) {
+            moves++;
+            callCpu();
+        } else{
+            attackedShip(hitAShip, shipElement);
+        }
+        //console.log(cpu.playerGameboard);
+        
+    }
+    
 }
 
 const attackedShip = (ship, shipElement) => {
@@ -140,12 +164,23 @@ const whatShipIs = (ships, ship) => {
 }
 
 const markAsSunkCpuShip = (shipSelector) =>{
-    const board = document.querySelector(".attackElementContainer")
+    const board = document.querySelector("#attackGround")
     shipSelector = "." + shipSelector;
-    const shipElements = document.querySelectorAll(shipSelector);
-    console.log(shipElements);
+    const shipElements = board.querySelectorAll(shipSelector);
+    //console.log(shipElements);
     shipElements.forEach((element)  => {
         element.classList.remove("hitShip");
         element.classList.add("sunkShip");
     }) 
+}
+
+
+const callCpu = () => {
+    console.log("callCpu");
+    const selector = document.querySelector("#selector");
+    selector.classList.add("cpu");
+    cpuPlays(player).then(() => {
+            moves++;
+            selector.classList.remove("cpu");
+        });
 }
