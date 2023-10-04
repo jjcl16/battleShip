@@ -3,6 +3,7 @@
  * @param  player 
  */
 
+let sunkPlayerShips = 0;
 let previousCpuPlay = []
 
 const cpu = (player) =>{
@@ -58,8 +59,18 @@ const attackedShip = (ship, shipElement, ships) => {
 
     shipElement.classList.add(shipSelector);
     if(ship.isSunk()) markAsSunkCpuShip(shipSelector);
-    console.log("hit, is sunk?" + ship.isSunk());
+    if(thereIsAWinner()){
+        alert("CPU WINS");
+        location.reload();
+    } 
 }
+
+
+const thereIsAWinner = () => {
+    //console.log({sunkPlayerShips})
+    return sunkPlayerShips === 5;
+}
+
 
 const whatShipIs = (ships, ship) => {
     let shipIdentifyer;
@@ -91,6 +102,7 @@ const whatShipIs = (ships, ship) => {
 }
 
 const markAsSunkCpuShip = (shipSelector) =>{
+    sunkPlayerShips++;
     const board = document.querySelector("#playerBoard")
     shipSelector = "." + shipSelector;
     const shipElements = board.querySelectorAll(shipSelector);

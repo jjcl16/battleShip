@@ -1,6 +1,7 @@
 const Player = require("./player");
 const cpuPlays = require("./cpuPlays");
 
+let sunkCpuShips = 0;
 const xSize = 7;
 const ySize = 7;
 const player = Player(xSize,ySize);
@@ -83,13 +84,11 @@ const domInit = () => {
             YAttack.setAttribute("id", "A"+[x]+[y]);
             YAttack.classList.add("attackElement");
             YAttack.addEventListener("click", callAttack );
-            YAttack.textContent = [x]+[y];
             XAttack.appendChild(YAttack);    
             
             const YPlayer = document.createElement("div");
             YPlayer.setAttribute("id", "P"+[x]+[y]);
             YPlayer.classList.add("playerBoardElement")
-            YPlayer.textContent = [x]+[y];
             XPlayer.appendChild(YPlayer);    
         }
         attackGround.appendChild(XAttack);
@@ -131,7 +130,11 @@ const attackedShip = (ship, shipElement) => {
     const shipSelector = whatShipIs(cpu.ships, ship);
     shipElement.classList.add(shipSelector);
     if(ship.isSunk()) markAsSunkCpuShip(shipSelector);
-    console.log("hit, is sunk?" + ship.isSunk())
+    //console.log("hit, is sunk?" + ship.isSunk());
+    if(thereIsAWinner()){
+        alert("Player WINS");
+        location.reload();
+    } 
 }
 
 const whatShipIs = (ships, ship) => {
@@ -164,6 +167,7 @@ const whatShipIs = (ships, ship) => {
 }
 
 const markAsSunkCpuShip = (shipSelector) =>{
+    sunkCpuShips++;
     const board = document.querySelector("#attackGround")
     shipSelector = "." + shipSelector;
     const shipElements = board.querySelectorAll(shipSelector);
@@ -176,11 +180,17 @@ const markAsSunkCpuShip = (shipSelector) =>{
 
 
 const callCpu = () => {
-    console.log("callCpu");
+    //console.log("callCpu");
     const selector = document.querySelector("#selector");
     selector.classList.add("cpu");
     cpuPlays(player).then(() => {
             moves++;
             selector.classList.remove("cpu");
         });
+}
+
+
+const thereIsAWinner = () => {
+    //console.log({sunkCpuShips})
+    return sunkCpuShips === 5;
 }
