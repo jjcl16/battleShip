@@ -24,7 +24,15 @@ const domInit = () => {
 
     // asing id
     top.setAttribute("id", "top");
+    top.textContent = "Battleship Game"
     foot.setAttribute("id", "foot");
+    foot.textContent = "Developed by"
+    github = document.createElement("a");
+    github.textContent = "Jenner Caraballo"
+    github.setAttribute("href", "https://github.com/jjcl16?tab=repositories");
+
+    foot.appendChild(github);
+
     workspace.setAttribute("id","workspace");
 
     // append to body
